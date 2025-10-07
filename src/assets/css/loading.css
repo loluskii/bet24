@@ -1,0 +1,155 @@
+@-webkit-keyframes circles {
+  to {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+
+  from {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes circles {
+  to {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+
+  from {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+}
+
+.m-loading-wrap {
+  min-height: 15rem;
+  position: relative;
+}
+
+.m-loading-wrap__center {
+  height: 100%;
+  left: 0;
+  position: absolute !important;
+  top: 0;
+  width: 100%;
+}
+
+.m-loading-wrap__full {
+  height: 100vh;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  z-index: 2;
+}
+
+.m-loading-wrap__dynamic {
+  height: 100%;
+  width: 100%;
+}
+
+.m-loading {
+  font-size: 1rem;
+  text-align: center;
+}
+
+.m-loading .loading {
+  -webkit-animation: circles 1s infinite;
+  animation: circles 1s infinite;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+  left: 50%;
+  margin-left: -1.25rem;
+  margin-top: -1.25rem;
+  position: absolute !important;
+  top: 50%;
+}
+
+.m-loading .loading::before {
+  content: '\e654';
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+}
+
+.m-loading .loading:before {
+  font-size: 2.5rem;
+  height: 2.5rem;
+  line-height: 1;
+  width: 2.5rem;
+}
+
+.m-loading .loading-fail {
+  padding: 0.83333333rem 0;
+  text-align: center;
+}
+
+.m-loading .loading-fail::before {
+  content: '\e624';
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+}
+
+.m-loading .loading-fail:before {
+  display: block;
+  font-size: 3rem;
+}
+
+.m-loading .loading-fail .fail-text {
+  margin-bottom: 2rem;
+  margin-top: 0.83333333rem;
+  white-space: nowrap;
+  word-break: keep-all;
+}
+
+.m-loading .loading-fail .fail-btn {
+  border: 1px solid var(--brand-secondary);
+  border-radius: 30px;
+  display: inline-block;
+  height: 3rem;
+  line-height: 3rem;
+  padding: 0 2.33333333rem;
+  border-color: var(--brand-secondary);
+  border-color: var(--brand-secondary);
+  color: var(--brand-secondary);
+}
+
+.m-loading.light {
+  background-color: #fafafa;
+  background-color: var(--background-general-primary);
+}
+
+.m-loading.light .loading::before {
+  color: #dcdee5;
+}
+
+.m-loading.light .loading-fail::before {
+  color: #dcdee5;
+}
+
+.m-loading.light .loading-fail .fail-text {
+  color: #9ca0ab;
+}
+
+.m-loading.dark {
+  background-color: #353a45;
+  background-color: var(--background-type2-secondary);
+}
+
+.m-loading.dark .loading::before {
+  color: #dcdee5;
+}
+
+.m-loading.dark .loading-fail::before {
+  color: rgba(234, 236, 239, 0.15);
+}
+
+.m-loading.dark .loading-fail .fail-text {
+  color: #9ca0ab;
+}

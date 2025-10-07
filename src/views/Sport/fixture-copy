@@ -1,0 +1,969 @@
+<template>
+  <div class="m-event-list">
+    <div class="mt-lg-4 pt-lg-4" style="width: 100%; height: 48px"></div>
+    <HeaderGame :SportsName="getActiveSport"></HeaderGame>
+
+    <div class="choose-bar-pad" style="margin-top: 0.6rem; display: none">
+      <div class="m-choose-bar-wrap has-live" product="3">
+        <div class="overly" v-if="filterIsOpen"></div>
+        <div class="m-choose-bar">
+          <div tabindex="0" class="m-choose-time" @click="choosePeriod">
+            <div class="m-title">{{ activeFilterTime ? activeFilterTime : 'Daily' }}</div>
+            <div v-if="filterTime" class="m-list">
+              <ul>
+                <li class="">All</li>
+                <li class="">3 hours</li>
+                <li class="checked">Today</li>
+                <li class="">Tuesday</li>
+                <li class="">Wednesday</li>
+                <li class="">Thursday</li>
+                <li class="">Friday</li>
+                <li class="">Saturday</li>
+                <li class="">Sunday</li>
+              </ul>
+            </div>
+          </div>
+          <div tabindex="0" class="m-choose-league">
+            <div class="m-title">League</div>
+            <div class="m-list" style="min-height: 709.359px; display: none">
+              <div class="m-regions">
+                <div class="m-regions-list">
+                  <div class="m-scroll-wrap">
+                    <ul class="m-category">
+                      <li data-id="sr:category:189" class="tournament">
+                        <span class="category-name">Belgium</span
+                        ><span class="select-tournamet-size"></span
+                        ><span class="event-size">2</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="m-scroll-wrap"></div>
+                </div>
+              </div>
+              <div class="m-regions-opt">
+                <span class="m-regions-reset">Reset</span><span class="m-regions-apply">Apply</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="m-sanp-nav-container" id="m-sanp-nav-container">
+      <div
+        class="m-snap-nav-wrap m-sport-type has-live"
+        :class="{ 'm-sport-type-fixed': isTop }"
+        style="overflow: auto"
+      >
+        <ul class="m-snap-nav flex">
+          <li
+            v-for="(market, m) in marketsGroup"
+            :key="m"
+            :class="market.marketID === activeMarket.marketID ? 'active' : ''"
+            class="m-sport-type-item m-snap-nav-item"
+            @click="selectMarket(market)"
+          >
+            {{ market.marketName }}
+          </li>
+        </ul>
+        <!-- <i class="controls left-controls"></i> <i class="controls right-controls"></i> -->
+      </div>
+    </div>
+    <div ref="el" class="m-bet-content" style="position: relative">
+      <template v-if="!isLoading">
+        <div v-for="(group, index) in fixturesList" :key="index" class="m-league event-league">
+          <div class="m-league-title" @click="showChild($event, index)">
+            <span class="icon-triangle"></span>
+            <span class="text">{{ group[0].categoryName }} - {{ index }}</span>
+            <span class="m-event-size">{{ group.length }}</span>
+          </div>
+          <div class="m-league-conent" :id="'m-league-child_' + index">
+            <div
+              v-for="(fixture, f) in _.groupBy(group, (fixture) => fixture.date.split(' ')[0])"
+              :key="f"
+              class="x-table m-sports-table football"
+            >
+              <div class="x-table-row m-date-row">
+                <div class="x-table-cell m-date">{{ formatDate(f, 'DD/MM dddd') }}</div>
+                <div class="x-table-cell market-title">
+                  <template v-for="(market, m) in activeMarket.outcomes" :key="m">
+                    <div>
+                      <span>{{ market.outcomeName }}</span>
+                    </div>
+                  </template>
+                </div>
+              </div>
+              <PrematchFixture
+                v-for="(event, index) in fixture"
+                :key="index"
+                :eventData="event"
+                :activeMarket="activeMarket"
+              ></PrematchFixture>
+            </div>
+          </div>
+        </div>
+      </template>
+      <LoadingSpinner v-show="isLoading"></LoadingSpinner>
+      <LoadingError v-show="loadingError"></LoadingError>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { defineComponent, ref, watch, onMounted, computed } from 'vue'
+import HeaderGame from '@/components/HeaderGame.vue'
+import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
+import LoadingError from '@/components/Loaders/LoadingError.vue'
+import { useRoute } from 'vue-router'
+import _ from 'lodash'
+import PrematchFixture from '@/components/Prematch/PrematchFixture.vue'
+import { getFixturesByTournamentId, formatDate } from '@/helpers'
+import { useUtilsStore } from '@/stores'
+import { getFixturesByCategories, getSportHighlights, getToday2 } from '@/helpers'
+import $ from 'jquery'
+
+const utilsStore = useUtilsStore()
+const route = useRoute()
+const fixturesList = ref([])
+
+const filterIsOpen = ref(false)
+const filterTime = ref(false)
+const activeFilterTime = ref(null)
+const marketsGroup = ref({})
+const activeMarket = ref({})
+
+const isLoading = ref(false)
+const loadingError = ref(false)
+const page = ref(1)
+
+const getSportbyName = (name) => {
+  return utilsStore.sportsMenu.find((x) => x.sportName == name)
+}
+
+const getActiveSport = computed(() => {
+  return getSportbyName(route.params.sport)
+})
+
+function showChild(e, index) {
+  console.log(e) // Consider removing this line in production code
+  const childId = 'm-league-child_' + index
+  const childElement = document.getElementById(childId)
+  const element = e.currentTarget // Use e.currentTarget instead of e
+  const isOpen = element.classList.contains('hide')
+
+  if (isOpen) {
+    childElement.classList.remove('d-none')
+    element.classList.remove('hide')
+  } else {
+    childElement.classList.add('d-none')
+    element.classList.add('hide')
+  }
+}
+
+watch(
+  () => [route.name, route.query.period, route.query.type],
+  async ([routeName, period, type]) => {
+    const { sportID } = getSportbyName(route.params.sport)
+    switch (routeName) {
+      case 'fixtures-by-tournaments':
+      case 'featured-tournaments':
+        const { tournament_id } = route.params
+        await getTournamentFixtures(sportID, tournament_id)
+        break
+
+      case 'fixtures-by-category':
+        const { category_id } = route.params
+        await getCategoryFixtures(sportID, category_id)
+        break
+
+      case 'fixtures-by-categories':
+        await fetchFixturesByCategories(sportID)
+        break
+
+      case 'fixtures-by-sports':
+        if (period) {
+          await fetchActiveSportByPeriod(sportID, period)
+        } else {
+          await fixturesByActiveSport()
+        }
+        break
+
+      default:
+        // Handle other routes or provide a default behavior
+        break
+    }
+  },
+  { immediate: true } // Trigger the watch callback immediately on component mount
+)
+
+async function getTournamentFixtures(sid, tid) {
+  isLoading.value = true
+  try {
+    const res = await getFixturesByTournamentId(tid, sid)
+    fixturesList.value = _.groupBy(res.fixtures, 'tournament')
+    marketsGroup.value = res.markets
+    activeMarket.value = marketsGroup.value[0]
+    isLoading.value = false
+  } catch (error) {
+    isLoading.value = false
+    loadingError.value = true
+    console.error(error)
+  }
+}
+
+async function getCategoryFixtures(sid, cid) {
+  isLoading.value = true
+  try {
+    const res = await getFixturesByCategories(sid, cid)
+    fixturesList.value = _.groupBy(res.fixtures, 'tournament')
+    marketsGroup.value = res.markets
+    activeMarket.value = marketsGroup.value[0]
+    isLoading.value = false
+  } catch (error) {
+    isLoading.value = false
+    loadingError.value = true
+    console.error(error)
+  }
+}
+
+async function fetchActiveSportByPeriod(id, period) {
+  isLoading.value = true
+  try {
+    if (period == 'today') {
+      return await fetchTodayActiveSport(id)
+    } else {
+      const res = await getSportHighlights(id, period)
+      fixturesList.value = _.groupBy(res.fixtures, 'tournament')
+      marketsGroup.value = res.markets
+      activeMarket.value = marketsGroup.value[0]
+      isLoading.value = false
+    }
+  } catch (error) {
+    isLoading.value = false
+    loadingError.value = true
+    console.error(error)
+  }
+}
+
+async function fixturesByActiveSport(id) {
+  isLoading.value = true
+  try {
+    const res = await getSportHighlights(id)
+    fixturesList.value = _.groupBy(res.fixtures, 'tournament')
+    marketsGroup.value = res.markets
+    activeMarket.value = marketsGroup.value[0]
+    isLoading.value = false
+  } catch (error) {
+    isLoading.value = false
+    loadingError.value = true
+    console.error(error)
+  }
+}
+
+async function fetchTodayActiveSport(id) {
+  try {
+    const res = await getToday2(id, 1)
+    fixturesList.value = _.groupBy(res.fixtures, 'tournament')
+    marketsGroup.value = res.markets
+    activeMarket.value = marketsGroup.value[0]
+    isLoading.value = false
+  } catch (error) {
+    isLoading.value = false
+    loadingError.value = true
+    console.error(error)
+  }
+}
+
+async function selectMarket(market) {
+  activeMarket.value = market
+}
+
+const isScrolled = ref(false)
+const isTop = ref(false)
+const divPosition = ref(null)
+
+const handleScroll = () => {
+  isScrolled.value = window.scrollY > 50
+  const specificDiv = document.getElementById('m-sanp-nav-container')
+  divPosition.value = specificDiv ? specificDiv.getBoundingClientRect().top : 0
+
+  if (divPosition.value <= 59) {
+    isTop.value = true
+  } else {
+    isTop.value = false
+  }
+}
+
+let reachedBottom = false
+
+async function onLoadMore() {
+  window.onscroll = async () => {
+    if (!reachedBottom) {
+      let bottomOfWindow =
+        window.innerHeight + window.scrollY > document.documentElement.scrollHeight - 100
+      if (bottomOfWindow) {
+        reachedBottom = true
+        console.log('reaching bottom')
+        page.value++
+        const { sportID } = getSportbyName(route.params.sport)
+        switch (route.name) {
+          case 'fixtures-by-tournaments':
+          case 'featured-tournaments':
+            const { tournament_id } = route.params
+            const res = await getFixturesByTournamentId(tournament_id, sid)
+            let groupedData = _.groupBy(res.fixtures, 'tournament')
+            fixturesList.value = Object.assign({}, fixturesList.value, ...groupedData)
+            break
+
+          case 'fixtures-by-sports':
+            if (period) {
+              await fetchActiveSportByPeriod(sportID, period)
+            } else {
+              await fixturesByActiveSport()
+            }
+            break
+
+          default:
+            // Handle other routes or provide a default behavior
+            break
+        }
+      }
+    }
+  }
+}
+
+async function fetchFixturesByCategories(sid) {
+  const ids = JSON.parse(localStorage.getItem('categoryIds'))
+  const promises = ids.map((cat) => {
+    return getFixturesByTournamentId(cat.tournamentID, sid)
+  })
+
+  try {
+    isLoading.value = true
+    const results = await Promise.all(promises)
+    const anotherArray = results.map((res) => {
+      return _.groupBy(res.fixtures, 'tournament')
+    })
+    fixturesList.value = Object.assign({}, fixturesList.value, ...anotherArray)
+    marketsGroup.value = results[0].markets
+    activeMarket.value = marketsGroup.value[0]
+    isLoading.value = false
+  } catch (error) {
+    // Handle errors
+    console.error('Error fetching fixtures:', error)
+  }
+}
+
+function choosePeriod() {
+  if (filterIsOpen.value) {
+    filterTime.value = false
+    $('.m-choose-bar').removeClass('m-choose-bar-show')
+    filterIsOpen.value = false
+  } else {
+    $('.m-choose-bar').addClass('m-choose-bar-show')
+    filterIsOpen.value = true
+    filterTime.value = true
+  }
+}
+
+onMounted(async () => {
+  window.addEventListener('scroll', handleScroll)
+  onLoadMore()
+})
+
+defineComponent({
+  name: 'fixture-view',
+  components: { HeaderGame, LoadingSpinner, LoadingError }
+})
+</script>
+
+<style>
+.m-event-list {
+  background-color: #fafafa;
+  color: #353a45;
+  -webkit-overflow-scrolling: none;
+  overscroll-behavior: none;
+}
+.m-event-list .m-topnav .title {
+  font-size: 1.66666667rem;
+}
+.m-event-list .m-topnav .arrow-icon {
+  font-family: 'iconfont';
+  width: auto;
+}
+.m-event-list .m-topnav .arrow-icon:before {
+  content: '\e6A3';
+  display: inline-block;
+  font-size: 0.66666667rem;
+  font-family: 'iconfont';
+  line-height: 1;
+  position: relative;
+  -webkit-transform: rotate(0);
+  -ms-transform: rotate(0);
+  transform: rotate(0);
+  -webkit-transform-origin: center;
+  -ms-transform-origin: center;
+  transform-origin: center;
+  -webkit-transition: -webkit-transform 0.3s ease;
+  transition: -webkit-transform 0.3s ease;
+  transition: transform 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    -webkit-transform 0.3s ease;
+  vertical-align: middle;
+}
+.m-event-list .m-topnav .arrow-icon.open:before {
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+.m-event-list .m-topnav .trans-select {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+.m-event-list .m-topnav .trans-select .sport-select.af-select {
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  height: 2rem;
+  position: static;
+}
+.m-event-list .m-topnav .trans-select .sport-select.af-select .af-select-title {
+  display: none;
+}
+.m-event-list .m-topnav .trans-select .sport-select.af-select .af-select-title .af-select-input {
+  display: hidden;
+}
+.m-event-list .m-topnav .trans-select .sport-select.af-select .af-select-list {
+  background-color: #fafafa;
+  background-color: var(--background-general-primary);
+  border: none;
+  border-top: 1px solid;
+  -webkit-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+  margin-top: 1.66666667rem;
+  max-height: 80vh;
+  overflow: auto;
+  position: absolute;
+  z-index: 1001;
+  border-top-color: #eaecef;
+  border-top-color: var(--brand-border-type1);
+}
+.m-choose-bar-wrap.fixed {
+  background-color: #fafafa;
+  background-color: var(--background-general-primary);
+  border-bottom: 1px solid #eaecef;
+  border-color: #eaecef;
+  border-color: var(--brand-border-type1);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 99;
+}
+.m-choose-bar-wrap.fixed.nav-down {
+  top: 3.66666667rem;
+}
+.m-choose-bar-wrap.fixed.nav-down.has-live {
+  top: 7rem;
+}
+.m-choose-bar {
+  background-color: #fafafa;
+  background-color: var(--background-general-primary);
+  border-bottom: 0.08333333rem solid #eaecef;
+  border-color: #eaecef;
+  border-color: var(--brand-border-type1);
+  border-left: 0px;
+  border-right: 0px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+  -webkit-overflow-scrolling: none;
+  overscroll-behavior: none;
+  position: relative;
+  -ms-touch-action: none;
+  touch-action: none;
+  -webkit-transition: top 0.3s;
+  transition: top 0.3s;
+}
+.m-choose-bar.m-choose-bar-show {
+  position: relative;
+  top: 0px;
+  width: 100%;
+  z-index: 997;
+}
+
+.m-event-list .m-topnav .trans-select .sport-select.af-select .af-select-list .af-select-item {
+  background-color: #fafafa;
+  background-color: var(--background-general-primary);
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: block;
+  font-size: 1.16666667rem;
+  height: 3rem;
+  line-height: 3rem;
+  padding-left: 3rem;
+  text-align: left;
+  color: #353a45;
+  color: var(--text-type1-primary);
+}
+.m-event-list
+  .m-topnav
+  .trans-select
+  .sport-select.af-select
+  .af-select-list
+  .af-select-item.active {
+  background-color: #fafafa;
+  background-color: var(--background-general-primary);
+  color: var(--brand-highlight-text);
+}
+.m-event-list
+  .m-topnav
+  .trans-select
+  .sport-select.af-select
+  .af-select-list
+  .af-select-item.active:after {
+  color: #33ea6a;
+  content: '\e611';
+  float: right;
+  font-family: 'iconfont';
+  font-size: 1.33333333rem;
+  padding-right: 1.66666667rem;
+}
+.m-event-list
+  .m-topnav
+  .trans-select
+  .sport-select.af-select
+  .af-select-list
+  .af-select-item.hover {
+  background-color: #f2f3f5;
+  background-color: var(--background-type1-primary);
+}
+.m-event-list .m-topnav .home-link {
+  padding: 0 1rem 0 0.66666667rem;
+}
+.m-event-list .m-topnav .slot-container {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+}
+.m-event-list .m-topnav .slot-container > a {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+}
+.m-event-list .m-topnav .slot-container .search-icon {
+  padding: 0 0.66666667rem 0 1.25rem;
+}
+.m-event-list .m-topnav .slot-container .search-icon::before {
+  content: '\e613';
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+}
+.m-event-list .m-topnav .slot-container .search-icon:before {
+  font-size: 1.75rem;
+  position: relative;
+  top: 0.08333333rem;
+}
+.m-event-list .m-sport-bet-error {
+  color: #353a45;
+  color: var(--text-type1-primary);
+  padding: 2.5rem 0 0.83333333rem;
+}
+.m-event-list .no-data {
+  color: #9ca0ab;
+  color: var(--text-disable-type1-primary);
+  padding: 2.33333333rem;
+  text-align: center;
+}
+.m-event-list .no-data::before {
+  content: '\e624';
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+}
+.m-event-list .no-data:before {
+  color: #dcdee5;
+  color: var(--disable-brand-secondary);
+  font-size: 2.5rem;
+}
+.m-event-list .m-loading-wrap {
+  margin-top: 15%;
+}
+.m-event-list .m-sanp-nav-container {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-bottom: 1px solid;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 4rem;
+  width: 100%;
+  border-bottom-color: #eaecef;
+  border-bottom-color: var(--brand-border-type1);
+}
+.m-event-list .m-sport-type {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+.m-event-list .m-sport-type .m-sport-type-item {
+  font-size: 1.16666667rem;
+  font-weight: normal;
+  padding: 0.61666667rem 1.25rem;
+  border-radius: 30px;
+}
+.m-event-list .m-sport-type .m-sport-type-item.active {
+  background-color: #fca311;
+  color: #ffffff !important;
+}
+.m-event-list .m-sport-type .m-sport-type-item:first-child {
+  margin-left: 0.83333333rem;
+}
+.m-event-list .m-sport-type .m-sport-type-item:last-child {
+  margin-right: 0.83333333rem;
+}
+.m-event-list .m-sport-type.m-sport-type-fixed {
+  background-color: #fafafa;
+  background-color: var(--background-general-primary);
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 3.66666667rem;
+  -webkit-transition: top 0.3s;
+  transition: top 0.3s;
+  z-index: 100;
+  padding: 10px 0;
+  border-bottom: 1px solid #eaecef;
+}
+/* .m-event-list .m-sport-type.m-sport-type-fixed.has-live {
+  top: 7rem;
+} */
+.m-event-list .m-sport-type.m-sport-type-fixed.nav-down {
+  top: 7.33333333rem;
+}
+.m-event-list .m-sport-type.m-sport-type-fixed.nav-down.has-live {
+  top: 10.66666667rem;
+}
+.m-event-list .m-sport-type.m-sport-type-fixed.choose-open {
+  z-index: -1;
+}
+.m-event-list .m-outright-bar {
+  border-bottom: solid 0.08333333rem;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  border-bottom-color: #eaecef;
+  border-bottom-color: var(--brand-border-type1);
+}
+.m-event-list .m-outright-bar .m-match-type-item {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  font-size: 1.16666667rem;
+  font-weight: bold;
+  padding: 0.66666667rem 1.25rem;
+  width: 100%;
+}
+.m-event-list .m-outright-bar .m-match-type-item.active {
+  border-bottom: 4px solid var(--brand-text-secondary);
+}
+.m-event-list .m-outright-bar .m-match-type-item.m-snap-nav-item--disabled {
+  background-color: #eaecef;
+  background-color: var(--background-type1-tertiary);
+  color: #9ca0ab;
+  color: var(--text-disable-type1-primary);
+}
+.m-event-list .choose-bar-pad {
+  height: 3.66666667rem;
+}
+.m-event-list .choose-bar-pad.fixed {
+  position: relative;
+  z-index: 101;
+}
+
+.m-choose-sort,
+.m-choose-league,
+.m-choose-odds,
+.m-choose-time {
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #fafafa;
+  background-color: var(--background-general-primary);
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  min-width: 20%;
+  outline: none;
+  padding: 0.91666667rem 0.5rem 0.91666667rem 0;
+}
+.m-choose-sort .m-title,
+.m-choose-league .m-title,
+.m-choose-odds .m-title,
+.m-choose-time .m-title {
+  background-color: #fafafa;
+  background-color: var(--background-general-primary);
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #1b1e25;
+  color: var(--text-type1-tertiary);
+  font-size: 1.16666667rem;
+  font-weight: 700;
+  height: 1.66666667rem;
+  line-height: 1.66666667rem;
+  overflow: hidden;
+  padding: 0 1.66666667rem 0 0.66666667rem;
+  position: relative;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.m-choose-sort .m-title::before,
+.m-choose-league .m-title::before,
+.m-choose-odds .m-title::before,
+.m-choose-time .m-title::before {
+  content: '\e6a3';
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+}
+.m-choose-sort .m-title::before,
+.m-choose-league .m-title::before,
+.m-choose-odds .m-title::before,
+.m-choose-time .m-title::before {
+  color: #9ca0ab;
+  color: var(--text-type1-secondary);
+  font-size: 0.83333333rem;
+  position: absolute;
+  right: 0.5rem;
+}
+.m-choose-sort .m-title.active::before,
+.m-choose-league .m-title.active::before,
+.m-choose-odds .m-title.active::before,
+.m-choose-time .m-title.active::before {
+  content: '\e62d';
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+}
+.m-choose-sort .m-title.active::before,
+.m-choose-league .m-title.active::before,
+.m-choose-odds .m-title.active::before,
+.m-choose-time .m-title.active::before {
+  color: var(--brand-highlight-text);
+  color: var(--brand-text-secondary);
+  font-size: 0.83333333rem;
+}
+.m-choose-sort .m-title.used,
+.m-choose-league .m-title.used,
+.m-choose-odds .m-title.used,
+.m-choose-time .m-title.used {
+  color: var(--brand-highlight-text);
+  color: var(--brand-text-secondary);
+}
+.m-list {
+  background-color: #fafafa;
+  background-color: var(--background-general-primary);
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  left: 0px;
+  margin-top: 1rem;
+  max-height: 60vh;
+  overflow: auto;
+  padding: 0.83333333rem 0;
+  position: absolute;
+  width: 100%;
+  z-index: 4;
+}
+.m-list li {
+  font-weight: 700;
+  height: 3rem;
+  line-height: 3rem;
+  padding: 0 0.83333333rem;
+}
+.m-list li:active {
+  background-color: #f2f3f5;
+  background-color: var(--background-type1-primary);
+}
+.m-list li.checked {
+  color: var(--brand-highlight-text);
+  color: var(--brand-text-secondary);
+}
+.m-list li:not(.tournament).checked::before {
+  color: var(--brand-highlight-text);
+  color: var(--brand-text-secondary);
+  position: absolute;
+  right: 1.33333333rem;
+}
+.m-list li:not(.tournament).checked::before::before {
+  content: '\e611';
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+}
+.m-choose-time,
+.m-choose-odds,
+.m-choose-league {
+  border-right: 1px solid #eaecef;
+  border-color: #eaecef;
+  border-color: var(--brand-border-type1);
+}
+.m-choose-bar.fixed .m-choose-time .m-list,
+.m-choose-bar.fixed .m-choose-sort .m-list,
+.m-choose-bar.fixed .m-choose-league .m-list {
+  max-height: 80vh;
+}
+
+#m-league-select-all-check-box .check-stroke-wrapper:not(.checked) {
+  background-color: transparent !important;
+}
+#m-league-select-all-check-box .check-stroke-wrapper:not(.checked).sportybet {
+  border: 1px solid white !important;
+}
+.m-league .m-league-title {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #fafafa;
+  background-color: var(--background-general-primary);
+  border-top: 1px solid #f2f3f5;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #1b1e25;
+  color: var(--c-prematch-list-league-title-text);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 1.16666667rem;
+  height: 3.66666667rem;
+  line-height: 3.66666667rem;
+  overflow: hidden;
+  padding: 0 3.33333333rem 0 0.83333333rem;
+}
+.m-league .m-league-title .text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+  padding-left: 0.83333333rem;
+}
+.m-league .m-league-title .boost {
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  height: 2rem;
+  margin-left: 0.33333333rem;
+  width: 2rem;
+}
+.m-league .m-league-title .icon-triangle {
+  display: inline-block;
+}
+.m-league .m-league-title .icon-triangle::before {
+  content: '\e6a3';
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+}
+.m-league .m-league-title .icon-triangle::before {
+  color: var(--brand-highlight-text);
+  color: var(--brand-quaternary);
+  display: inline-block;
+  font-size: 0.83333333rem;
+  height: 1.16666667rem;
+  line-height: 1.4;
+  overflow: hidden;
+  vertical-align: middle;
+}
+.m-league .m-league-title.hide .icon-triangle {
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+.m-league .m-league-title .m-event-size {
+  color: #353a45;
+  color: var(--text-default-dark);
+  font-size: 1rem;
+  height: 3.66666667rem;
+  position: absolute;
+  right: 1.41666667rem;
+}
+.m-league .select-all-container {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: absolute;
+  right: 1.66666667rem;
+}
+.m-league .select-all-container .select-all-text {
+  margin-right: 0.66666667rem;
+}
+.m-league .select-all-container .select-all-check-box-bg {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 1.25rem;
+  padding-left: 0.16666667rem;
+  padding-top: 0.16666667rem;
+  width: 1.25rem;
+}
+.m-league .select-all-container .all-selected-text-color {
+  color: var(--brand-highlight-text);
+  color: var(--brand-quaternary);
+}
+.m-league .brand-secondary {
+  background-color: var(--brand-highlight-text);
+  background-color: var(--brand-text-secondary);
+  color: #ffffff;
+  color: var(--brand-tertiary);
+}
+</style>

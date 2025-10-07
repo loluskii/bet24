@@ -1,0 +1,53 @@
+/* roboto-condensed-regular - latin */
+@font-face {
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    local('Roboto Condensed'),
+    local('RobotoCondensed-Regular'),
+    url('../fonts/roboto-condensed-v18-latin-ext_latin-regular.woff2') format('woff2'),
+    url('../fonts/roboto-condensed-v18-latin-ext_latin-regular.woff') format('woff'),
+    url('../fonts/roboto-condensed-v18-latin-ext_latin-regular.ttf') format('truetype');
+}
+
+/* roboto-condensed-700 - latin */
+@font-face {
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src:
+    local('Roboto Condensed Bold'),
+    local('RobotoCondensed-Bold'),
+    url('../fonts/roboto-condensed-v18-latin-ext_latin-700.woff2') format('woff2'),
+    url('../fonts/roboto-condensed-v18-latin-ext_latin-700.woff') format('woff'),
+    url('../fonts/roboto-condensed-v18-latin-ext_latin-700.ttf') format('truetype');
+}
+
+/* roboto-regular - latin */
+@font-face {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    local('Roboto'),
+    local('Roboto-Regular'),
+    url('../fonts/Roboto-Regular-webfont.woff') format('woff'),
+    url('../fonts/Roboto-Regular-webfont.ttf') format('truetype');
+}
+
+/* roboto-700 - latin */
+@font-face {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src:
+    local('Roboto Bold'),
+    local('Roboto-Bold'),
+    url('../fonts/Roboto-Bold-webfont.woff') format('woff'),
+    url('../fonts/Roboto-Bold-webfont.ttf') format('truetype');
+}

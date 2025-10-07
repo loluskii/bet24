@@ -1,0 +1,772 @@
+.show-close .es-dialog-close {
+  display: block;
+}
+
+.es-dialog.reset-dislog-title .es-dialog-head h1 {
+  height: auto;
+}
+
+.ng-deposit-header.m-nav-secondary .home-link {
+  padding: 0 1rem 0 0.625rem;
+}
+
+.ng-deposit-header.m-nav-secondary .header-icon-help {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  padding: 0 0.625rem;
+  color: #ffffff;
+  color: var(--brand-tertiary);
+}
+
+.ng-deposit-header.m-nav-secondary .header-icon-help::before {
+  content: '\e6cc';
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+}
+
+.ng-deposit-header.m-nav-secondary .header-icon-help:before {
+  font-size: 1.91666667rem;
+  line-height: 1;
+}
+
+#deposit {
+  height: 100vh;
+  background-color: #fafafa;
+  background-color: var(--background-general-primary);
+}
+
+#deposit .m-tabs-nav {
+  border-bottom: 1px solid #eaecef;
+  overflow-x: auto;
+  border-bottom-color: #eaecef;
+  border-bottom-color: var(--brand-border-type1);
+}
+
+#deposit .m-tabs-nav .m-tabs-ink-bar {
+  background-color: var(--brand-highlight-text);
+  background-color: var(--brand-secondary);
+  bottom: 0;
+  height: 0.33333333rem;
+}
+
+#deposit .m-tabs-nav .m-tabs-tab {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  font-size: 1.066rem;
+  margin-right: 0;
+  padding: 1.58333333rem 1.066rem;
+  text-align: center;
+}
+
+#deposit .m-tabs-nav .m-tabs-tab:last-child::after {
+  content: '';
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  height: 5px;
+  width: 5px;
+}
+
+#deposit .m-tabs-nav .m-tabs-tab.m-tabs-tab-active {
+  color: #353a45;
+  color: var(--text-type1-primary);
+  font-weight: bold !important;
+  border-bottom: 2px solid var(--brand-secondary);
+}
+
+#deposit .error-msg {
+  color: #e41827;
+  color: var(--warning-primary);
+  font-size: 10px;
+  line-height: 20px;
+  min-height: 20px;
+  text-align: left;
+}
+
+#deposit .name-confirm-tip {
+  margin: 0 1.33333333rem;
+  margin-top: 1.33333333rem;
+}
+
+#deposit .deposit-bank {
+  padding: 0 1.33333333rem;
+}
+
+#deposit .deposit-bank .deposit-bank-static {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border: 1px solid #9ca0ab;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  margin-top: 1.83333333rem;
+  border-color: #9ca0ab;
+  border-color: var(--line-type1-secondary);
+}
+
+#deposit .deposit-bank .deposit-bank-static.error {
+  border-color: #e41827;
+  border-color: var(--warning-primary);
+}
+
+#deposit .deposit-bank .deposit-bank-static .bank-static-prepend {
+  color: #9ca0ab;
+  color: var(--text-type1-secondary);
+  padding: 0 0.83333333rem;
+}
+
+#deposit .deposit-bank .deposit-bank-static .bank-static-name {
+  color: #353a45;
+  color: var(--text-type1-primary);
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  font-size: 14px;
+  line-height: 48px;
+  text-align: left;
+}
+
+#deposit .deposit-bank .deposit-bank-static .bank-static-name.blank {
+  color: #9ca0ab;
+  color: var(--text-type1-secondary);
+}
+
+#deposit .deposit-bank .deposit-bank-static .bank-static-icon {
+  -webkit-box-flex: 0;
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  height: 20px;
+  margin-left: 1.33333333rem;
+}
+
+#deposit .deposit-bank .deposit-bank-static .bank-static-arrow {
+  color: #9ca0ab;
+  color: var(--text-type1-secondary);
+  -webkit-box-flex: 0;
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  margin: 0 1.33333333rem;
+}
+
+#deposit .deposit-bank .deposit-bank-static .bank-static-arrow::before {
+  content: '\e608';
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+}
+
+#deposit .deposit-bank .deposit-bank-number {
+  margin-top: 0.41666667rem;
+}
+
+#deposit .deposit-bank .deposit-bank-number.static {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border: 1px solid #9ca0ab;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 100%;
+  border-color: #9ca0ab;
+  border-color: var(--line-type1-secondary);
+}
+
+#deposit .deposit-bank .deposit-bank-number.static.error {
+  border-color: #e41827;
+  border-color: var(--warning-primary);
+}
+
+#deposit .deposit-bank .deposit-bank-number.static .static-prepend {
+  color: #9ca0ab;
+  color: var(--text-type1-secondary);
+  margin: 0 0.83333333rem;
+}
+
+#deposit .deposit-bank .deposit-bank-number.static .static-content {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 8px 0;
+}
+
+#deposit .deposit-bank .deposit-bank-number.static .static-content .static-label {
+  color: var(--brand-highlight-text);
+  color: var(--brand-secondary);
+  font-size: 10px;
+  height: 12px;
+  line-height: 12px;
+  margin-bottom: 4px;
+  text-align: left;
+}
+
+#deposit .deposit-bank .deposit-bank-number.static .static-content .static-input {
+  font-size: 14px;
+  height: 16px;
+  line-height: 16px;
+}
+
+#deposit .deposit-bank .switch-container {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 14px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  margin-bottom: 1.066rem;
+  margin-top: 0.75rem;
+}
+
+#deposit .deposit-bank .switch-container .switch-bank {
+  color: var(--brand-highlight-text);
+  color: var(--brand-secondary);
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  font-size: 14px;
+  line-height: 14px;
+}
+
+#deposit .deposit-bank .switch-container .switch-bank .switch-icon {
+  margin-left: 0.66666667rem;
+}
+
+#deposit .deposit-bank .switch-container .switch-bank .switch-icon::before {
+  content: '\e608';
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+}
+
+#deposit .deposit-bank .switch-container .switch-bank .switch-icon:before {
+  font-size: 14px;
+}
+
+#deposit .deposit-bank .m-icon-phone {
+  color: rgba(13, 151, 55, 0.6);
+}
+
+#deposit .deposit-bank .m-icon-phone::before {
+  content: '\e666';
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+}
+
+#deposit .deposit-bank .m-icon-phone:before {
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+#deposit .deposit-footer {
+  padding: 0 1.33333333rem;
+}
+
+#deposit .deposit-footer--bank-transfer {
+  padding-top: 1rem;
+}
+
+#deposit .deposit-footer .balance-container {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  line-height: 19px;
+  margin-bottom: 0.41666667rem;
+}
+
+#deposit .deposit-footer .balance-container .m-icon-help {
+  color: var(--brand-highlight-text);
+  color: var(--brand-quaternary);
+}
+
+#deposit .deposit-footer .balance-container .m-icon-help::before {
+  content: '\e686';
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+}
+
+#deposit .deposit-footer .balance-container .balance-section {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+}
+
+#deposit .deposit-footer .balance-container .balance-section--bank-transfer {
+  -webkit-box-pack: start;
+  -webkit-justify-content: start;
+  -ms-flex-pack: start;
+  justify-content: start;
+}
+
+#deposit .deposit-footer .balance-container .balance-section .balance-text {
+  color: #353a45;
+  color: var(--text-type1-primary);
+  font-size: 12px;
+  margin-left: 0.66666667rem;
+}
+
+#deposit .deposit-footer .balance-container .balance-section .balance-text--bank-transfer {
+  margin-left: 0;
+}
+
+#deposit .deposit-footer .input-container {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+#deposit .deposit-footer .input-container > *:not(:last-child) {
+  margin-right: 10px;
+}
+
+#deposit .deposit-footer .input-container > :first-child {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+#deposit .deposit-footer .input-container > :nth-child(2) {
+  -webkit-box-flex: 2.2;
+  -webkit-flex: 2.2;
+  -ms-flex: 2.2;
+  flex: 2.2;
+}
+
+#deposit .deposit-footer .input-container .cvv-input .m-input-wap {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#deposit .deposit-footer .deposit-amount {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0.66666667rem 0;
+}
+
+#deposit .deposit-footer .deposit-amount .amount-prepend {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 14px;
+}
+
+#deposit .deposit-footer .deposit-amount input {
+  text-align: right;
+}
+
+#deposit .deposit-footer .deposit-submit {
+  border: none;
+  height: 4rem;
+  margin-bottom: 2rem;
+  margin-top: 20px;
+  width: 100%;
+}
+
+#deposit .deposit-footer .example-cards-container {
+  margin-bottom: 1.66666667rem;
+  text-align: center;
+}
+
+#deposit .deposit-footer .example-cards-container .example-card {
+  height: 1.66666667rem;
+  margin-right: 0.5rem;
+  vertical-align: center;
+  width: 2.5rem;
+}
+
+#deposit .deposit-footer .example-cards-container .card-row {
+  margin-bottom: 1rem;
+}
+
+#deposit .deposit-footer .bank-transfer-card {
+  border-radius: 0.16666667rem;
+  margin-bottom: 1.66666667rem;
+  padding: 1rem 1.33333333rem 1.33333333rem;
+}
+
+#deposit .deposit-footer .bank-transfer-card-title {
+  color: #353a45;
+  color: var(--text-type1-primary);
+  font-size: 1.33333333rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+#deposit .deposit-footer .bank-transfer-card-steps {
+  color: #9ca0ab;
+  color: var(--text-type1-secondary);
+  counter-reset: step-counter;
+  list-style: none;
+}
+
+#deposit .deposit-footer .bank-transfer-card-steps li {
+  counter-increment: step-counter;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+#deposit .deposit-footer .bank-transfer-card-steps li:before {
+  color: #9ca0ab;
+  color: var(--text-type1-secondary);
+  content: 'Step ' counter(step-counter);
+  display: block;
+  margin-right: 1rem;
+  min-width: 2.91666667rem;
+}
+
+#deposit .deposit-footer .bank-transfer-card-steps li:last-child {
+  margin-bottom: 0;
+}
+
+#deposit .select-prepend {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0 1.33333333rem;
+  width: 100%;
+}
+
+#deposit .select-prepend .new-pay {
+  background-color: #fafafa;
+  background-color: var(--background-general-primary);
+  border: 1px solid var(--brand-highlight-text);
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 3.5rem;
+  text-align: center;
+  width: 100%;
+  border-color: var(--brand-highlight-text);
+  border-color: var(--brand-secondary);
+  color: var(--brand-highlight-text);
+  color: var(--brand-secondary);
+}
+
+#deposit .refresh-container {
+  text-align: center;
+}
+
+#deposit .refresh-container .error-text {
+  color: #353a45;
+  color: var(--text-type1-primary);
+  font-size: 1.066rem;
+  margin-top: 4.16666667rem;
+  text-align: center;
+}
+
+#deposit .refresh-container .refresh-banks {
+  background-color: var(--brand-highlight-text);
+  background-color: var(--brand-secondary);
+  border: none;
+  margin-top: 3.33333333rem;
+  width: 10rem;
+}
+
+#deposit .refresh-container .m-input-wap-wrapper--active {
+  border: 1px solid var(--brand-highlight-text);
+  border-color: var(--brand-highlight-text);
+  border-color: var(--brand-secondary);
+}
+
+#deposit .icon-14-size:before {
+  font-size: 1.33333333rem;
+}
+
+#deposit .icon:before {
+  font-size: 1.33333333rem;
+}
+
+#deposit .icon-lock--outline::before {
+  content: '\e650';
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+}
+
+#deposit .icon-lock--outline:before {
+  font-size: 1.5rem;
+}
+
+.m-dp-container {
+  background-color: #fafafa;
+  background-color: var(--background-general-primary);
+  min-height: 100vh;
+}
+
+.m-dp-coming-soon-container {
+  height: calc(100vh - 4.16666667rem);
+}
+
+.loading-icon-input[data-v-7ceae3b5] {
+  -webkit-animation: rotation-7ceae3b5 2s infinite linear;
+  animation: rotation-7ceae3b5 2s infinite linear;
+  left: 21.41666667rem;
+  position: absolute;
+}
+
+@-webkit-keyframes rotation-7ceae3b5 {
+  from {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  to {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+
+@keyframes rotation-7ceae3b5 {
+  from {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  to {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+
+.wrap[data-v-7ceae3b5] {
+  margin-bottom: 1.33333333rem;
+  min-height: 6.66666667rem;
+}
+
+.title[data-v-7ceae3b5] {
+  color: #1b1e25;
+  color: var(--text-type1-tertiary);
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.m-dp-tips[data-v-7ceae3b5] {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.m-dp-tips .l-item[data-v-7ceae3b5] {
+  -webkit-box-align: start;
+  -webkit-align-items: flex-start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: var(--text-type1-secondary);
+  color: #9ca0ab;
+  grid-template-columns: 1.33333333rem 1fr;
+  padding-bottom: 0.66666667rem;
+}
+
+.m-dp-tips .l-item[data-v-7ceae3b5]::before {
+  display: table-cell;
+  font-size: 1rem;
+  line-height: 1.33333333rem;
+  vertical-align: top;
+  width: 1.33333333rem;
+}
+
+#card-fields-container .expiryAndCvv {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  margin-top: 0.41666667rem;
+}
+
+#card-fields-container .expiryAndCvv .expiry-container {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  margin-right: 1.5rem;
+  width: 12.91666667rem;
+}
+
+#card-fields-container .expiryAndCvv .expiry-container .deposit-expiry {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+#card-fields-container .expiryAndCvv .cvv-container {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  margin-right: 0.58333333rem;
+  width: 10.83333333rem;
+}
+
+#card-fields-container .expiryAndCvv .cvv-container .deposit-cvv {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+#card-fields-container .expiryAndCvv .help-container {
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  line-height: 4.16666667rem;
+  width: 1.5rem;
+}
+
+#card-fields-container .expiryAndCvv .help-container .cvv-help {
+  color: var(--brand-highlight-text);
+  color: var(--brand-quaternary);
+}
+
+#card-fields-container .expiryAndCvv .help-container img {
+  vertical-align: middle;
+  width: 1.5rem;
+}
+
+#card-fields-container .error-msg {
+  color: #e41827;
+  color: var(--warning-primary);
+  font-size: 10px;
+  line-height: 12px;
+  margin-top: 2px;
+  min-height: 12px;
+  text-align: left;
+}
+
+#card-fields-container .icon-card::before {
+  content: '\e652';
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+}
+
+#card-fields-container .icon-lock::before {
+  content: '\e650';
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+}
+
+#card-fields-container .icon-help::before {
+  content: '\e686';
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+}
+
+#card-fields-container .icon-date::before {
+  content: '\e659';
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+}
+
+#card-fields-container .icon:before {
+  font-size: 1.5rem;
+}
+
+.unsave-warning-container .es-dialog-btn {
+  font-size: 1.066rem;
+}
+
+.unsave-warning-container .es-dialog-btn:first-child {
+  color: #9ca0ab;
+  color: var(--text-type1-secondary);
+  font-weight: normal;
+}
