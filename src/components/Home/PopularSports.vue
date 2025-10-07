@@ -1070,7 +1070,7 @@ onDeactivated(() => {
 }
 
 .topTournamentCard {
-  background-color: white;
+  background-color: rgb(60,71,113);
   padding: 5px;
   border-top: 3px solid orangered;
   display: flex;

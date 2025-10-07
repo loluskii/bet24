@@ -269,7 +269,7 @@ async function submitKycRequest(){
     let payload = {
       documentType: documentType.value,
       documentNumber: documentNumber.value,
-			clientId: import.meta.env.VITE_CLIENT_ID
+			clientId: CLIENT_ID
     }
     if(documentType.value === 'bank_account'){
       payload.bankCode = bankCode.value
