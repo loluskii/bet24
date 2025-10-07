@@ -36,7 +36,7 @@
       <li class="m-sports-choose-item m-snap-nav-item">
         <a href="#" @click.prevent="playAviator"
           ><div class="sport-icon">
-            <img src="@/assets/images/-aviator.png" loading="eager" width="24" height="24" />
+            <img src="@/assets/images/aviator.png" loading="eager" width="24" height="24" />
           </div>
           <span class="sport-text" data-cms-key="live" data-cms-page="wap_home">Aviator</span>
         </a>
