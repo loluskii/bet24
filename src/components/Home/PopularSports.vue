@@ -23,9 +23,6 @@
           })
         "
       >
-        <div class="image">
-          <img src="@/assets/images/3hrs.jpeg" style="height: 24px" alt="" srcset="" />
-        </div>
         <div class="text">football in 3 hours</div>
       </div>
       <template v-for="(match, index) in featuredTournaments" :key="index">
@@ -1079,6 +1076,7 @@ onDeactivated(() => {
   -webkit-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.5);
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.5);
   margin-right: 15px;
+  color: #eaecef;
 }
 
 .topTournamentCard:last-of-type {
