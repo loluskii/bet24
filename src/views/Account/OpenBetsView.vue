@@ -189,24 +189,6 @@
                             {{ ` | ${event.score}` }}
                           </span>
                         </div>
-                        <div v-else data-v-f5461f3c="" class="m-score">
-                          <span data-v-f5461f3c="" class="m-t-12 capitalize m-t-gray">
-                            {{
-                              parseInt(event.matchStatus) === 3
-                                ? 'FT'
-                                : event.eventTime
-                                  ? `${event.eventTime}'`
-                                  : ''
-                            }}
-                          </span>
-                          <span
-                            data-v-f5461f3c=""
-                            class="m-t-12 m-l-12"
-                            style="margin-left: 10px; font-weight: bold"
-                          >
-                            {{ event.score }}
-                          </span>
-                        </div>
                       </div>
                     </li>
                   </ul>
